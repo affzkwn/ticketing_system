@@ -70,7 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
             DateTime date = DateTime.parse(detail['checkin']);
 
             double paymentAmount = payment.calculatePayment(date);
-            output += 'Payment Amount: $paymentAmount\n';
+            output +=
+                'Payment Amount: \$ ${paymentAmount.toStringAsFixed(2)}\n';
           }
 
           break; // Exit the loop after finding a match

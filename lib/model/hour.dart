@@ -14,8 +14,7 @@ class Hourly {
   int getMinutes(String checkin, String checkout) {
     DateTime dateTime = DateTime.parse(checkin);
     DateTime dateTime2 = DateTime.parse(checkout);
-    int totalminutes =
-        (dateTime2.hour * 60 + dateTime2.minute) - (dateTime.hour * 60);
+    int totalminutes = (dateTime2.hour * 60) - (dateTime.hour * 60);
     return totalminutes;
   }
 }
