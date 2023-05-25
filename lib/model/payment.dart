@@ -21,7 +21,7 @@ class Payment {
       } else if (totalMinute < 180) {
         return 3;
       } else {
-        return 3 + ((totalMinute - 180) / 60) * 1.5;
+        return 3 + ((totalMinute - 180) / 60) * 1.50;
       }
     } else {
       if (totalMinute < 15) {
@@ -29,7 +29,7 @@ class Payment {
       } else if (totalMinute < 180) {
         return 5;
       } else {
-        return 5 + ((totalMinute - 180) / 60) * 2;
+        return 5 + ((totalMinute - 180) / 60) * 2.00;
       }
     }
   }
