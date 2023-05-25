@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: _processData,
-                child: Text('Process'),
+                child: Text('Payment'),
               ),
               SizedBox(height: 16.0),
               Text(_output),
