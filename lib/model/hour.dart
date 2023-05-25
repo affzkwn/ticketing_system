@@ -11,15 +11,11 @@ class Hourly {
     required this.checkout,
   });
 
-  factory Hourly.fromJson(Map<String, dynamic> json) {
-    return Hourly(
-      checkin: json['detail'][0]['checkout'],
-      checkout: json['detail'][0]['checkout'],
-    );
-  }
-  int getMinutes(String time, minutes) {
-    DateTime dateTime = DateTime.parse(time);
-    int minutes = dateTime.hour * 60 + dateTime.minute;
-    return minutes;
+  int getMinutes(String checkin, String checkout) {
+    DateTime dateTime = DateTime.parse(checkin);
+    DateTime dateTime2 = DateTime.parse(checkout);
+    int totalminutes = (dateTime2.hour * 60 + dateTime2.minute) -
+        (dateTime.hour * 60 + dateTime.minute);
+    return totalminutes;
   }
 }

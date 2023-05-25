@@ -6,28 +6,31 @@ import 'package:ticketing_system/model/week.dart';
 import 'package:ticketing_system/model/hour.dart';
 
 class Payment {
-  int addTime = 0;
+  final Hourly hourly;
+  final WeekCategory weekCategory;
 
-  Future calculatePayment() async {
-    Hourly hourly;
-    Day day;
-    switch (day.isWeekday(date)) {
-      case true:
-        if (hourly.getMinutes() < 15) {
-          return 0;
-        } else if (hourly.getMinutes() < 180) {
-          return 3;
-        } else {
-          return 3 + ((hourly.getMinutes() - 180) / 60) * 1.5;
-        }
-      case false:
-        if (hourly.getMinutes() < 15) {
-          return 0;
-        } else if (hourly.getMinutes() < 180) {
-          return 5;
-        } else {
-          return 3 + ((hourly.getMinutes() - 180) / 60) * 2;
-        }
+  Payment(this.hourly, this.weekCategory);
+
+  double calculatePayment(DateTime date) {
+    int totalMinute = hourly.getMinutes(hourly.checkin, hourly.checkout);
+    bool isWeekday = weekCategory.isWeekday(date);
+
+    if (isWeekday) {
+      if (totalMinute < 15) {
+        return 0;
+      } else if (totalMinute < 180) {
+        return 3;
+      } else {
+        return 3 + ((totalMinute - 180) / 60) * 1.5;
+      }
+    } else {
+      if (totalMinute < 15) {
+        return 0;
+      } else if (totalMinute < 180) {
+        return 5;
+      } else {
+        return 3 + ((totalMinute - 180) / 60) * 2;
+      }
     }
   }
 }
