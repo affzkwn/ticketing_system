@@ -8,48 +8,121 @@ import 'dart:io';
 import 'model/payment.dart';
 import 'model/week.dart';
 
-void main() {
-  File file = File('file.json');
-  String contents = file.readAsStringSync();
-  List<dynamic> data = jsonDecode(contents);
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
-  // Get the input of the registered car from the user
-  stdout.write('Enter the registration number of the car: ');
-  String? userRegNo = stdin.readLineSync()?.trim();
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Ticketing System',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
 
-  bool isCarRegistered = false;
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
 
-  for (var item in data) {
-    String regNo = item['reg_no'];
-    List<dynamic> details = item['details'];
+class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController _regNoController = TextEditingController();
+  String _output = '';
 
-    if (regNo == userRegNo) {
-      isCarRegistered = true;
-      print('Registration Number: $regNo');
+  Future<String> _loadJSONFromAsset(String filePath) async {
+    return await rootBundle.loadString(filePath);
+  }
 
-      for (var detail in details) {
-        String checkIn = detail['in'];
-        String checkOut = detail['out'];
+  void _processData() async {
+    String regNo = _regNoController.text.trim();
 
-        Hourly hour = Hourly(checkin: checkIn, checkout: checkOut);
-        WeekCategory weekCategory = WeekCategory();
-        Payment payment = Payment(hour, weekCategory);
+    // Read the contents of the JSON file
+    String filePath =
+        'assets/json/file.json'; // Replace with your custom file path
+    String contents = await _loadJSONFromAsset(filePath);
+    List<dynamic> data = jsonDecode(contents);
+
+    bool isCarRegistered = false;
+    String output = '';
+
+    for (var item in data) {
+      String carRegNo = item['reg_no'];
+      List<dynamic> details = item['details'];
+
+      if (carRegNo == regNo) {
+        isCarRegistered = true;
+        output += 'Registration Number: $carRegNo\n';
 
         for (var detail in details) {
           String checkIn = detail['in'];
           String checkOut = detail['out'];
-          DateTime date = DateTime.parse(detail['date']);
 
-          double paymentAmount = payment.calculatePayment(date);
-          print('Payment Amount: $paymentAmount');
+          Hourly hour = Hourly(checkin: checkIn, checkout: checkOut);
+          WeekCategory weekCategory = WeekCategory();
+          Payment payment = Payment(hour, weekCategory);
+
+          for (var detail in details) {
+            String checkIn = detail['in'];
+            String checkOut = detail['out'];
+            DateTime date = DateTime.parse(detail['date']);
+
+            double paymentAmount = payment.calculatePayment(date);
+            output += 'Payment Amount: $paymentAmount\n';
+          }
+
+          break; // Exit the loop after finding a match
         }
-
-        break; // Exit the loop after finding a match
       }
     }
+
+    if (!isCarRegistered) {
+      output = 'The registration number $regNo is not found in the data.';
+    }
+
+    setState(() {
+      _output = output;
+    });
   }
 
-  if (!isCarRegistered) {
-    print('The registration number $userRegNo is not found in the data.');
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Ticketing System'),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: _regNoController,
+                decoration: InputDecoration(
+                  labelText: 'Registration Number',
+                ),
+              ),
+              SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: _processData,
+                child: Text('Process'),
+              ),
+              SizedBox(height: 16.0),
+              Text(_output),
+            ],
+          ),
+        ),
+      ),
+    );
   }
+}
+
+void main() {
+  runApp(MyApp());
 }
