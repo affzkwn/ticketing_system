@@ -60,6 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
           Hourly hour = Hourly(checkin: checkIn, checkout: checkOut);
           WeekCategory weekCategory = WeekCategory();
+          output += 'In: $checkIn\n';
+          output += 'Out: $checkOut\n';
           Payment payment = Payment(hour, weekCategory);
 
           for (var detail in details) {
