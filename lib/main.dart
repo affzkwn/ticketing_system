@@ -1,15 +1,12 @@
 //main function to combine all the other function.
 
-import 'package:flutter/material.dart';
-import 'package:ticketing_system/model/hour.dart';
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:flutter/material.dart';
+import 'package:ticketing_system/model/hour.dart';
 import 'model/payment.dart';
 import 'model/week.dart';
 
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -43,10 +40,8 @@ class _MyHomePageState extends State<MyHomePage> {
     String regNo = _regNoController.text.trim();
 
     // Read the contents of the JSON file
-    String filePath =
-        'assets/json/file.json'; // Replace with your custom file path
-    String contents = await _loadJSONFromAsset(filePath);
-    List<dynamic> data = jsonDecode(contents);
+    String fileContents = await rootBundle.loadString('assets/json/file.json');
+    List<dynamic> data = jsonDecode(fileContents);
 
     bool isCarRegistered = false;
     String output = '';
@@ -60,17 +55,17 @@ class _MyHomePageState extends State<MyHomePage> {
         output += 'Registration Number: $carRegNo\n';
 
         for (var detail in details) {
-          String checkIn = detail['in'];
-          String checkOut = detail['out'];
+          String checkIn = detail['checkin'];
+          String checkOut = detail['checkout'];
 
           Hourly hour = Hourly(checkin: checkIn, checkout: checkOut);
           WeekCategory weekCategory = WeekCategory();
           Payment payment = Payment(hour, weekCategory);
 
           for (var detail in details) {
-            String checkIn = detail['in'];
-            String checkOut = detail['out'];
-            DateTime date = DateTime.parse(detail['date']);
+            String checkIn = detail['checkin'];
+            String checkOut = detail['checkout'];
+            DateTime date = DateTime.parse(detail['checkin']);
 
             double paymentAmount = payment.calculatePayment(date);
             output += 'Payment Amount: $paymentAmount\n';
@@ -84,7 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
     if (!isCarRegistered) {
       output = 'The registration number $regNo is not found in the data.';
     }
-
     setState(() {
       _output = output;
     });
