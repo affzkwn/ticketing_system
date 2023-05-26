@@ -1,7 +1,8 @@
+import 'package:ticketing_system/model/paydetail.dart';
 import 'package:ticketing_system/model/payment.dart';
 
 class Validate {
-  final Payment paymentTime;
+  final PayDetail paymentTime;
 
   Validate(this.paymentTime);
 
