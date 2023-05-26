@@ -8,8 +8,13 @@ import 'package:ticketing_system/model/hour.dart';
 class Payment {
   final Hourly hourly;
   final WeekCategory weekCategory;
+  final String paymentTime;
 
-  Payment(this.hourly, this.weekCategory);
+  Payment(
+    this.hourly,
+    this.weekCategory,
+    this.paymentTime,
+  );
 
   double calculatePayment(DateTime date) {
     int totalMinute = hourly.getMinutes(hourly.checkin, hourly.checkout);
