@@ -4,8 +4,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ticketing_system/model/hour.dart';
+import 'model/paydetail.dart';
 import 'model/payment.dart';
 import 'model/week.dart';
+import 'model/validate.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -72,6 +74,11 @@ class _MyHomePageState extends State<MyHomePage> {
             double paymentAmount = payment.calculatePayment(date);
             output +=
                 'Payment Amount: \$ ${paymentAmount.toStringAsFixed(2)}\n';
+
+            Validate validator = Validate(PayDetail(payment));
+
+            bool isValid = validator.validateTicket(date);
+            output += 'Ticket Valid: ${isValid ? 'Yes' : 'No'}\n';
           }
 
           break; // Exit the loop after finding a match
