@@ -6,17 +6,22 @@ class Validate {
 
   Validate(this.paymentTime);
 
-  bool validateTicket(DateTime minute) {
-    DateTime paymentDateTime = DateTime.parse(paymentTime.paymentTime);
-    DateTime validStartTime = paymentDateTime;
-    DateTime validEndTime = paymentDateTime.add(Duration(minutes: 5));
+  bool validateTicket(DateTime ticketTime) {
+    DateTime? paymentDateTime =
+        paymentTime.paymentAmount.calculatePayment(ticketTime) > 0
+            ? DateTime.now()
+            : null;
 
-    if (minute.isBefore(validEndTime)) {
-      print('Valid');
-      return minute.isAfter(validStartTime) && minute.isBefore(validEndTime);
-    } else {
-      print('Invalid');
-      return false;
+    if (paymentDateTime != null) {
+      DateTime validEndTime = paymentDateTime.add(const Duration(minutes: 5));
+
+      if (ticketTime.isBefore(validEndTime)) {
+        print('Valid');
+        return true;
+      }
     }
+
+    print('Invalid');
+    return false;
   }
 }
