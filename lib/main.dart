@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
           for (var detail in details) {
             String checkIn = detail['checkin'];
             String checkOut = detail['checkout'];
-            DateTime date = DateTime.parse(detail['checkin']);
+            DateTime date = DateTime.parse(detail['checkout']);
 
             double paymentAmount = payment.calculatePayment(date);
             output +=
