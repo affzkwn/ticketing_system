@@ -8,7 +8,6 @@ import 'model/payment.dart';
 import 'model/week.dart';
 import 'model/validate.dart';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class MyApp extends StatelessWidget {
