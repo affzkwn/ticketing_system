@@ -17,7 +17,6 @@ class Payment {
   double calculatePayment(DateTime date) {
     int totalMinute = hourly.getMinutes(hourly.checkin, hourly.checkout);
     bool isWeekday = weekCategory.isWeekday(date);
-    print('date = $date');
     if (isWeekday) {
       if (totalMinute < 15) {
         return 0;
