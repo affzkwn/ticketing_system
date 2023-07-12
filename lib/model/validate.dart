@@ -14,6 +14,7 @@ class Validate {
 
     if (paymentDateTime != null) {
       DateTime validEndTime = paymentDateTime.add(const Duration(minutes: 5));
+
       DateTime validStartTime = paymentDateTime.add(const Duration(minutes: 0));
 
       if (ticketTime.isBefore(validEndTime) &&
@@ -23,7 +24,6 @@ class Validate {
         return true;
       }
     }
-
     print('Invalid');
     return false;
   }
