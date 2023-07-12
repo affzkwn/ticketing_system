@@ -14,8 +14,10 @@ class Validate {
 
     if (paymentDateTime != null) {
       DateTime validEndTime = paymentDateTime.add(const Duration(minutes: 5));
+      DateTime validStartTime = paymentDateTime.add(const Duration(minutes: 0));
 
-      if (ticketTime.isBefore(validEndTime)) {
+      if (ticketTime.isBefore(validEndTime) &&
+          ticketTime.isAfter(validStartTime)) {
         //suppose not string need to be integer
         print('Valid');
         return true;
